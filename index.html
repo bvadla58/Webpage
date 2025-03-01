@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            margin: 20px 0;
+        }
+        .navbar button {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .navbar button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(to right, #ff512f, #dd2476);
+        }
+        .container {
+            background: white;
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #333;
+        }
+        .resume-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .resume-link:hover {
+            text-decoration: underline;
+        }
+        .logout-btn {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            background: #c9302c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <button>Home</button>
+        <button onclick="window.open('signup.html','_blank')">Sign Up</button>
+        <button onclick="window.open('login.html','_blank')">Login</button>       
+        <button onclick="exitPage()">Exit</button>
+    </div>
+
+    <div class="container">
+        <h2>Welcome to My Website</h2>
+        <p><strong>Name:</strong> V. Bunnychary</p>
+        <p><strong>Email:</strong> vadlabunnychary123@gmail.com</p>
+        <p><strong>Section:</strong> O</p>
+        <p><strong>Branch:</strong> CSE Core</p>
+        <p><strong>Year:</strong> 2nd Year</p>
+        <p><a href="https://drive.google.com/file/d/1mmh0AMje3K34quLMb1DL5IHF0k5XN9Xm/view?usp=drivesdk" target="_blank">View Resume</a></p> 
+
+    </div>
+
+    <script>
+        function exitPage() {
+            alert("Thank you for visiting!");
+            window.close();
+        }
+    </script>
+
+</body>
+</html>

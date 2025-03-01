@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up & Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #4A90E2, #50C9C3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #4A90E2;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #357ABD;
+        }
+        .toggle {
+            background: none;
+            border: none;
+            color: #4A90E2;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="register">
+        <h2>Sign Up</h2>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="branch" placeholder="Branch" required>
+        <input type="text" id="section" placeholder="Section" required>
+        <input type="text" id="year" placeholder="Year" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+        <button onclick="register()">Sign Up</button>
+        <button class="toggle" onclick="toggleForm()">Already have an account? Login</button>
+    </div>
+
+    <div class="container" id="login" style="display: none;">
+        <h2>Login</h2>
+        <input type="text" id="login_username" placeholder="Name" required>
+        <input type="password" id="login_password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <input type="file" id="uploadExcel" accept=".xlsx">
+        <button class="toggle" onclick="toggleForm()">Don't have an account? Sign Up</button>
+    </div>
+
+    <script>
+        let users = [];
+
+        function toggleForm() {
+            document.getElementById('register').style.display =
+                document.getElementById('register').style.display === 'none' ? 'block' : 'none';
+            document.getElementById('login').style.display =
+                document.getElementById('login').style.display === 'none' ? 'block' : 'none';
+        }
+
+        function register() {
+            let name = document.getElementById('name').value.trim();
+            let branch = document.getElementById('branch').value.trim();
+            let section = document.getElementById('section').value.trim();
+            let year = document.getElementById('year').value.trim();
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            users.push({ Name: name, Branch: branch, Section: section, Year: year, Password: password });
+            saveToExcel(users);
+            
+            alert('Registration Successful! Redirecting to homepage...');
+            window.location.href = 'login.html'; // Redirect after registration
+        }
+
+        function login() {
+            let username = document.getElementById('login_username').value.trim();
+            let password = document.getElementById('login_password').value;
+            
+            let fileInput = document.getElementById('uploadExcel').files[0];
+
+            if (!fileInput) {
+                alert('Please upload the user data file.');
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                let data = new Uint8Array(e.target.result);
+                let workbook = XLSX.read(data, { type: 'array' });
+                let sheetName = workbook.SheetNames[0];
+                let jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+                let user = jsonData.find(user => user.Name === username && user.Password === password);
+                if (user) {
+                    alert('Login Successful! Redirecting to Loginpage...');
+                    window.location.href = 'login.html'; // Redirect after login
+                } else {
+                    alert('Invalid Credentials');
+                }
+            };
+            reader.readAsArrayBuffer(fileInput);
+        }
+
+        function saveToExcel(users) {
+            let ws = XLSX.utils.json_to_sheet(users);
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Users");
+
+            let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            let blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'users.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>

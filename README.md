@@ -1,1 +1,1 @@
-# Webpage
+It is a basic webpage that contains a home page where you can learn about me through a resume PDF. You can register yourself by clicking the registration button, which will redirect you to the registration page. After entering your details, you will be redirected to the login page. Once you log in, you will be taken back to the home page. Clicking the exit button will close the webpage.# Webpage
